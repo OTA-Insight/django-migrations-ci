@@ -12,6 +12,9 @@ from django.db import connections
 from django.db.migrations.loader import MigrationLoader
 from django.test.utils import setup_databases
 
+from django_migrations_ci import shell
+from django_migrations_ci.backends.mysql import _ctx
+
 logger = logging.getLogger(__name__)
 
 
@@ -163,6 +166,15 @@ def load(connection, input_file, storage, *, verbosity=1):
     if verbosity:
         db_name = connection.settings_dict["NAME"]
         logger.info(f"Load {input_file} to {db_name}")
+    # special case for mysql, because it can't use execute() to run many statements
+    if connection.vendor == "mysql":
+        ctx, env = _ctx(connection.settings_dict)
+        if ctx["port"]:
+            mysqldump = "mysql -h {host} -P {port} -u {user}  {database} < {input_file}"  # noqa: E501
+        else:
+            mysqldump = "mysql -h {host} -u {user} {database} < {input_file}"
+        shell.exec(mysqldump.format(input_file=f"{storage.location}/{input_file}", **ctx), env)
+        return
     with storage.open(input_file, "r") as f:
         sql = f.read()
     with connection.cursor() as cursor:

@@ -48,7 +48,7 @@ def pytest_configure(config):
     if verbosity is None:
         verbosity = config.option.verbose
 
-    command_kwargs = {"pytest": True}
+    command_kwargs = {"pytest": False}
 
     # Option numprocesses is from pytest-xdist and doesn't exist if it is not installed.
     parallel = getattr(config.option, "numprocesses", None)
