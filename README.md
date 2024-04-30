@@ -175,3 +175,13 @@ from 0 to N-1.
 
 * On sqlite3, a `db.sqlite3` generate `db.sqlite3_gwN` files.
 * On other databases, a `db` generate `test_db_gwN`.
+
+# Push to gemfury
+
+Bump the version in the pyproject.toml file
+
+```shell
+poetry build
+curl -F package=sdist/django_migrations_ci_lh-X.X.X.tar.gz  https://$TOKEN@push.fury.io/otainsight/
+
+```

@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "django-migrations-ci"
-version = "0.0.0"
+name = "django-migrations-ci-lh"
+version = "0.0.1"
 description = "Django migrations CI optimization"
 authors = ["Iuri de Silvio <iurisilvio@gmail.com>"]
 readme = "README.md"

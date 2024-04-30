@@ -57,7 +57,6 @@ class Command(BaseCommand):
         **options,
     ):
         self._setup_logging()
-
         if parallel == "auto":
             parallel = get_max_test_processes()
         elif parallel is not None:
